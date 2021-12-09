@@ -1,0 +1,32 @@
+{
+  "name": "apollo-example",
+  "reason": {
+    "react-jsx": 3
+  },
+  "sources": {
+    "dir": "src",
+    "subdirs": true
+  },
+  "bsc-flags": [
+    "-bs-super-errors",
+    "-bs-no-version-header"
+  ],
+  "package-specs": [
+    {
+      "module": "commonjs",
+      "in-source": true
+    }
+  ],
+  "suffix": ".bs.js",
+  "namespace": true,
+  "bs-dependencies": [
+    "reason-react",
+    "reason-apollo-hooks",
+    "reason-apollo"
+  ],
+  "ppx-flags": [
+    "@baransu/graphql_ppx_re/ppx",
+    "bs-let/ppx"
+  ],
+  "refmt": 3
+}
