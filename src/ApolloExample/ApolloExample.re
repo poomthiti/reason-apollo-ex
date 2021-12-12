@@ -1,72 +1,58 @@
-[@bs.val] external fetch: string => Js.Promise.t('a) = "fetch";
+let thStyle =
+  ReactDOMRe.Style.make(
+    ~padding="14px",
+    ~backgroundColor="#89CFF0",
+    ~borderRadius="4px",
+    ~minWidth="40px",
+    (),
+  );
 
-type state =
-  | LoadingDogs
-  | ErrorFetchingDogs
-  | LoadedDogs(array(string));
+let rowStyle = ReactDOMRe.Style.make(~textAlign="center", ());
+let tdStyle = ReactDOMRe.Style.make(~padding="8px", ());
 
 [@react.component]
 let make = () => {
-  let validators = ValidatorsQuery.get();
-  Js.log(validators);
-  let (state, setState) = React.useState(() => LoadingDogs);
-
-  // Notice that instead of `useEffect`, we have `useEffect0`. See
-  // reasonml.github.io/reason-react/docs/en/components#hooks for more info
-  React.useEffect0(() => {
-    Js.Promise.(
-      fetch("https://dog.ceo/api/breeds/image/random/3")
-      |> then_(response => response##json())
-      |> then_(jsonResponse => {
-           setState(_previousState => LoadedDogs(jsonResponse##message));
-           Js.Promise.resolve();
-         })
-      |> catch(_err => {
-           setState(_previousState => ErrorFetchingDogs);
-           Js.Promise.resolve();
-         })
-      |> ignore
-    );
-
-    // Returning None, instead of Some(() => ...), means we don't have any
-    // cleanup to do before unmounting. That's not 100% true. We should
-    // technically cancel the promise. Unofortunately, there's currently no
-    // way to cancel a promise. Promises in general should be way less used
-    // for React components; but since folks do use them, we provide such an
-    // example here. In reality, this fetch should just be a plain callback,
-    // with a cancellation API
-    None;
-  });
+  let validatorsData = ValidatorsSubscription.get();
 
   <div
     style={ReactDOMRe.Style.make(
-      ~height="120px",
+      ~height="100%",
       ~display="flex",
       ~alignItems="center",
       ~justifyContent="center",
       (),
     )}>
-    {switch (state) {
-     | ErrorFetchingDogs => React.string("An error occurred!")
-     | LoadingDogs => React.string("Loading...")
-     | LoadedDogs(dogs) =>
-       dogs
-       ->Belt.Array.mapWithIndex((i, dog) => {
-           let imageStyle =
-             ReactDOMRe.Style.make(
-               ~height="120px",
-               ~width="100%",
-               ~marginRight=i === Js.Array.length(dogs) - 1 ? "0px" : "8px",
-               ~borderRadius="8px",
-               ~boxShadow="0px 4px 16px rgb(200, 200, 200)",
-               ~backgroundSize="cover",
-               ~backgroundImage={j|url($dog)|j},
-               ~backgroundPosition="center",
-               (),
-             );
-           <div key=dog style=imageStyle />;
-         })
-       ->React.array
-     }}
+    <table>
+      <thead>
+        <tr>
+          <th style=thStyle> {React.string("Id")} </th>
+          <th style=thStyle> {React.string("Moniker")} </th>
+          <th style=thStyle> {React.string("Status")} </th>
+          <th style=thStyle> {React.string("Tokens")} </th>
+        </tr>
+      </thead>
+      <tbody>
+        {switch (validatorsData) {
+         | Data(data) =>
+           data##validators
+           ->Belt.Array.map(item =>
+               <tr key={string_of_int(item##id)} style=rowStyle>
+                 <td style=tdStyle>
+                   {string_of_int(item##id)->React.string}
+                 </td>
+                 <td style=tdStyle> {item##moniker->React.string} </td>
+                 <td style=tdStyle>
+                   {string_of_bool(item##status)->React.string}
+                 </td>
+                 <td style=tdStyle>
+                   {Js.Json.stringify(item##tokens)->React.string}
+                 </td>
+               </tr>
+             )
+           ->React.array
+         | _ => React.null
+         }}
+      </tbody>
+    </table>
   </div>;
 };

@@ -6,8 +6,9 @@ var Js_json = require("bs-platform/lib/js/js_json.js");
 var Js_option = require("bs-platform/lib/js/js_option.js");
 var ApolloHooks = require("reason-apollo-hooks/src/ApolloHooks.bs.js");
 var Caml_option = require("bs-platform/lib/js/caml_option.js");
+var Query$ApolloExample = require("./Query.bs.js");
 
-var ppx_printed_query = "query GetValidators  {\nvalidators  {\nid  \nmoniker  \nstatus  \ntokens  \nvalidator_report_count  {\ncount  \n}\n\n}\n\n}\n";
+var ppx_printed_query = "query GetValidators  {\nvalidators  {\nid  \nmoniker  \nstatus  \ntokens  \n}\n\n}\n";
 
 function parse(value) {
   var value$1 = Js_option.getExn(Js_json.decodeObject(value));
@@ -43,42 +44,11 @@ function parse(value) {
                     tmp$2 = Js_exn.raiseError("graphql_ppx: Field status on type validators is missing");
                   }
                   var value$11 = Js_dict.get(value$1, "tokens");
-                  var value$12 = Js_dict.get(value$1, "validator_report_count");
-                  var tmp$3;
-                  if (value$12 !== undefined) {
-                    var value$13 = Caml_option.valFromOption(value$12);
-                    var match = Js_json.decodeNull(value$13);
-                    if (match !== undefined) {
-                      tmp$3 = undefined;
-                    } else {
-                      var value$14 = Js_option.getExn(Js_json.decodeObject(value$13));
-                      var value$15 = Js_dict.get(value$14, "count");
-                      var tmp$4;
-                      if (value$15 !== undefined) {
-                        var value$16 = Caml_option.valFromOption(value$15);
-                        var match$1 = Js_json.decodeNull(value$16);
-                        if (match$1 !== undefined) {
-                          tmp$4 = undefined;
-                        } else {
-                          var value$17 = Js_json.decodeNumber(value$16);
-                          tmp$4 = value$17 !== undefined ? value$17 | 0 : Js_exn.raiseError("graphql_ppx: Expected int, got " + JSON.stringify(value$16));
-                        }
-                      } else {
-                        tmp$4 = undefined;
-                      }
-                      tmp$3 = {
-                        count: tmp$4
-                      };
-                    }
-                  } else {
-                    tmp$3 = undefined;
-                  }
                   return {
                           id: tmp,
                           moniker: tmp$1,
                           status: tmp$2,
-                          tokens: value$11 !== undefined ? Caml_option.valFromOption(value$11) : Js_exn.raiseError("graphql_ppx: Field tokens on type validators is missing"),
-                          validator_report_count: tmp$3
+                          tokens: value$11 !== undefined ? Caml_option.valFromOption(value$11) : Js_exn.raiseError("graphql_ppx: Field tokens on type validators is missing")
                         };
                 }) : Js_exn.raiseError("graphql_ppx: Field validators on type query_root is missing")
         };
@@ -134,24 +104,12 @@ var Validators = {
 
 function get(param) {
   var match = ApolloHooks.useQuery(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, definition);
-  var result = match[0];
-  if (typeof result === "number") {
-    if (result === /* Loading */0) {
-      return /* Loading */0;
-    } else {
-      return /* NoData */1;
-    }
-  } else if (result.TAG === /* Data */0) {
-    return {
-            TAG: /* Data */0,
-            _0: result._0
-          };
-  } else {
-    return {
-            TAG: /* Error */1,
-            _0: result._0
-          };
-  }
+  return Query$ApolloExample.let_(match[0], (function (result) {
+                return {
+                        TAG: /* Data */0,
+                        _0: result
+                      };
+              }));
 }
 
 exports.Validators = Validators;

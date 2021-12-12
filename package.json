@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "build": "bsb -make-world",
-    "start": "bsb -make-world -w -ws 5000 ",
+    "start": "bsb -make-world -w -ws _ ",
     "clean": "bsb -clean-world",
     "server": "moduleserve ./ --port 8000",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,11 +17,13 @@
   "license": "MIT",
   "dependencies": {
     "@apollo/react-hooks": "^4.0.0",
+    "apollo-link-ws": "^1.0.20",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "reason-apollo": "0.19.0",
     "reason-apollo-hooks": "^6.0.1",
-    "reason-react": ">=0.7.1"
+    "reason-react": ">=0.7.1",
+    "subscriptions-transport-ws": "^0.11.0"
   },
   "devDependencies": {
     "@baransu/graphql_ppx_re": "^0.7.1",

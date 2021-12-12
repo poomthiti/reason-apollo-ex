@@ -1,69 +1,64 @@
 'use strict';
 
-var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var Belt_Array = require("bs-platform/lib/js/belt_Array.js");
-var ValidatorsQuery$ApolloExample = require("../Query/ValidatorsQuery.bs.js");
+var Pervasives = require("bs-platform/lib/js/pervasives.js");
+var ValidatorsSubscription$ApolloExample = require("../Query/ValidatorsSubscription.bs.js");
+
+var thStyle = {
+  backgroundColor: "#89CFF0",
+  minWidth: "40px",
+  padding: "14px",
+  borderRadius: "4px"
+};
+
+var rowStyle = {
+  textAlign: "center"
+};
+
+var tdStyle = {
+  padding: "8px"
+};
 
 function ApolloExample(Props) {
-  var validators = ValidatorsQuery$ApolloExample.get(undefined);
-  console.log(validators);
-  var match = React.useState(function () {
-        return /* LoadingDogs */0;
-      });
-  var setState = match[1];
-  var state = match[0];
-  React.useEffect((function () {
-          fetch("https://dog.ceo/api/breeds/image/random/3").then(function (response) {
-                    return response.json();
-                  }).then(function (jsonResponse) {
-                  Curry._1(setState, (function (_previousState) {
-                          return /* LoadedDogs */{
-                                  _0: jsonResponse.message
-                                };
-                        }));
-                  return Promise.resolve(undefined);
-                }).catch(function (_err) {
-                Curry._1(setState, (function (_previousState) {
-                        return /* ErrorFetchingDogs */1;
-                      }));
-                return Promise.resolve(undefined);
-              });
-          
-        }), []);
+  var validatorsData = ValidatorsSubscription$ApolloExample.get(undefined);
   var tmp;
-  if (typeof state === "number") {
-    tmp = state !== 0 ? "An error occurred!" : "Loading...";
-  } else {
-    var dogs = state._0;
-    tmp = Belt_Array.mapWithIndex(dogs, (function (i, dog) {
-            var imageStyle = {
-              backgroundImage: "url(" + dog + ")",
-              backgroundPosition: "center",
-              height: "120px",
-              marginRight: i === (dogs.length - 1 | 0) ? "0px" : "8px",
-              width: "100%",
-              backgroundSize: "cover",
-              borderRadius: "8px",
-              boxShadow: "0px 4px 16px rgb(200, 200, 200)"
-            };
-            return React.createElement("div", {
-                        key: dog,
-                        style: imageStyle
-                      });
+  tmp = typeof validatorsData === "number" || validatorsData.TAG !== /* Data */0 ? null : Belt_Array.map(validatorsData._0.validators, (function (item) {
+            return React.createElement("tr", {
+                        key: String(item.id),
+                        style: rowStyle
+                      }, React.createElement("td", {
+                            style: tdStyle
+                          }, String(item.id)), React.createElement("td", {
+                            style: tdStyle
+                          }, item.moniker), React.createElement("td", {
+                            style: tdStyle
+                          }, Pervasives.string_of_bool(item.status)), React.createElement("td", {
+                            style: tdStyle
+                          }, JSON.stringify(item.tokens)));
           }));
-  }
   return React.createElement("div", {
               style: {
                 display: "flex",
-                height: "120px",
+                height: "100%",
                 alignItems: "center",
                 justifyContent: "center"
               }
-            }, tmp);
+            }, React.createElement("table", undefined, React.createElement("thead", undefined, React.createElement("tr", undefined, React.createElement("th", {
+                              style: thStyle
+                            }, "Id"), React.createElement("th", {
+                              style: thStyle
+                            }, "Moniker"), React.createElement("th", {
+                              style: thStyle
+                            }, "Status"), React.createElement("th", {
+                              style: thStyle
+                            }, "Tokens"))), React.createElement("tbody", undefined, tmp)));
 }
 
 var make = ApolloExample;
 
+exports.thStyle = thStyle;
+exports.rowStyle = rowStyle;
+exports.tdStyle = tdStyle;
 exports.make = make;
 /* react Not a pure module */
