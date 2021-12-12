@@ -28,4 +28,7 @@ let makeContainer = text => {
 };
 
 // All 4 examples.
-ReactDOMRe.render(<ApolloExample />, makeContainer("Apollo Example"));
+ReactDOMRe.render(
+  <ApolloClient> <ApolloExample /> </ApolloClient>,
+  makeContainer("Apollo Example"),
+);

@@ -2,6 +2,7 @@
 
 var React = require("react");
 var ReactDom = require("react-dom");
+var ApolloClient$ApolloExample = require("./ApolloClient.bs.js");
 var ApolloExample$ApolloExample = require("./ApolloExample/ApolloExample.bs.js");
 var ExampleStyles$ApolloExample = require("./ExampleStyles.bs.js");
 
@@ -25,7 +26,9 @@ function makeContainer(text) {
   return content;
 }
 
-ReactDom.render(React.createElement(ApolloExample$ApolloExample.make, {}), makeContainer("Apollo Example"));
+ReactDom.render(React.createElement(ApolloClient$ApolloExample.make, {
+          children: React.createElement(ApolloExample$ApolloExample.make, {})
+        }), makeContainer("Apollo Example"));
 
 exports.style = style;
 exports.makeContainer = makeContainer;

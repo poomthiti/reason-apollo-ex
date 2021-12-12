@@ -7,6 +7,8 @@ type state =
 
 [@react.component]
 let make = () => {
+  let validators = ValidatorsQuery.get();
+  Js.log(validators);
   let (state, setState) = React.useState(() => LoadingDogs);
 
   // Notice that instead of `useEffect`, we have `useEffect0`. See

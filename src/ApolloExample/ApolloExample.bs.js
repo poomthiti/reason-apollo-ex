@@ -3,8 +3,11 @@
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var Belt_Array = require("bs-platform/lib/js/belt_Array.js");
+var ValidatorsQuery$ApolloExample = require("../Query/ValidatorsQuery.bs.js");
 
 function ApolloExample(Props) {
+  var validators = ValidatorsQuery$ApolloExample.get(undefined);
+  console.log(validators);
   var match = React.useState(function () {
         return /* LoadingDogs */0;
       });

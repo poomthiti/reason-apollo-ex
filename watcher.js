@@ -35,5 +35,5 @@ function setUpWebSocket() {
   }
 };
 
-setUpWebSocket();
-setInterval(setUpWebSocket, 2000);
+// setUpWebSocket();
+// setInterval(setUpWebSocket, 2000);
